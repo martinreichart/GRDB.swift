@@ -630,7 +630,6 @@ precedencegroup ColumnAssignment {
     lowerThan: AssignmentPrecedence
 }
 
-infix operator <- : ColumnAssignment
 
 /// A ColumnAssignment can update rows in the database.
 ///
@@ -669,58 +668,4 @@ public struct ColumnAssignment {
 ///         // UPDATE player SET score = 0
 ///         try Player.updateAll(db, Column("score") <- 0)
 ///     }
-public func <- (column: ColumnExpression, value: SQLExpressible?) -> ColumnAssignment {
-    return ColumnAssignment(column: column, value: value)
-}
 
-/// Creates an assignment that adds a value
-///
-///     Column("score") += 1
-///     Column("score") += Column("bonus")
-///
-///     try dbQueue.write { db in
-///         // UPDATE player SET score = score + 1
-///         try Player.updateAll(db, Column("score") += 1)
-///     }
-public func += (column: ColumnExpression, value: SQLExpressible) -> ColumnAssignment {
-    return column <- column + value
-}
-
-/// Creates an assignment that subtracts a value
-///
-///     Column("score") -= 1
-///     Column("score") -= Column("bonus")
-///
-///     try dbQueue.write { db in
-///         // UPDATE player SET score = score - 1
-///         try Player.updateAll(db, Column("score") -= 1)
-///     }
-public func -= (column: ColumnExpression, value: SQLExpressible) -> ColumnAssignment {
-    return column <- column - value
-}
-
-/// Creates an assignment that multiplies by a value
-///
-///     Column("score") *= 2
-///     Column("score") *= Column("factor")
-///
-///     try dbQueue.write { db in
-///         // UPDATE player SET score = score * 2
-///         try Player.updateAll(db, Column("score") *= 2)
-///     }
-public func *= (column: ColumnExpression, value: SQLExpressible) -> ColumnAssignment {
-    return column <- column * value
-}
-
-/// Creates an assignment that divides by a value
-///
-///     Column("score") /= 2
-///     Column("score") /= Column("factor")
-///
-///     try dbQueue.write { db in
-///         // UPDATE player SET score = score / 2
-///         try Player.updateAll(db, Column("score") /= 2)
-///     }
-public func /= (column: ColumnExpression, value: SQLExpressible) -> ColumnAssignment {
-    return column <- column / value
-}
